@@ -1,0 +1,32 @@
+name: Q3
+on:
+  push:
+    paths:
+      - 'Q3.java'
+      - '.github/workflows/Q3.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  archive-q3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Générer Q3_archive_java.txt
+        run: |
+          echo "Leprevost Lucas" > Q3_archive_java.txt
+          cat Q3.java >> Q3_archive_java.txt
+
+      - name: Pousser le nouveau fichier sur le dépôt
+        run: |
+          git config --global user.name "Lucas.Leprevost"
+          git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git add Q3_archive_java.txt
+          git commit --allow-empty -m "Archive Q3"
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && break
+            sleep 2
+          done
