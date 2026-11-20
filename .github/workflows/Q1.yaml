@@ -5,21 +5,26 @@ on:
       - 'XYZ.txt'
       - '.github/workflows/Q1.yaml'
 
+permissions:
+  contents: write
+
 jobs:
   archive:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Copier XYZ.txt
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Copier XYZ.txt vers Q1_archive_XYZ.txt
         run: cp XYZ.txt Q1_archive_XYZ.txt
-      - name: Push archive
+
+      - name: Pousser le nouveau fichier sur le dépôt
         run: |
-          git config user.name "Lucas.Leprevost"
-          git config user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git config --global user.name "Lucas.Leprevost"
+          git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
           git add Q1_archive_XYZ.txt
-          git commit -m "Creation Q1_archive_XYZ.txt" || exit 0
+          git commit --allow-empty -m "Archive Q1"
           for i in 1 2 3 4 5; do
-            git pull --rebase && git push && exit 0
+            git pull --rebase && git push && break
             sleep 2
           done
-          exit 1
