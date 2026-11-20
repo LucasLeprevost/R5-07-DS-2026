@@ -1,0 +1,31 @@
+name: Q5
+on:
+  push:
+    paths:
+      - 'Q5.java'
+      - '.github/workflows/Q5.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  archive-q5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Générer Q5_archive_date.txt
+        run: |
+          DATE=$(date +'%d-%m-%Y')
+          FILENAME="Q5_archive_${DATE}.txt"
+          echo "Leprevost Lucas" > "$FILENAME"
+          cat Q5.java >> "$FILENAME"
+
+      - name: Pousser le nouveau fichier sur le dépôt
+        run: |
+          git config --global user.name "Lucas.Leprevost"
+          git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git add Q5_archive_*.txt
+          git commit --allow-empty -m "Archive Q5"
+          git push
