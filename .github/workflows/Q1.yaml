@@ -1,0 +1,25 @@
+name: Q1
+on:
+  push:
+    paths:
+      - 'XYZ.txt'
+      - '.github/workflows/Q1.yaml'
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copier XYZ.txt
+        run: cp XYZ.txt Q1_archive_XYZ.txt
+      - name: Push archive
+        run: |
+          git config user.name "Lucas.Leprevost"
+          git config user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git add Q1_archive_XYZ.txt
+          git commit -m "Creation Q1_archive_XYZ.txt" || exit 0
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && exit 0
+            sleep 2
+          done
+          exit 1
