@@ -1,0 +1,35 @@
+name: Q2
+on:
+  push:
+    paths:
+      - 'XYZ.txt'
+      - '.github/workflows/Q2.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  archive-q2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Générer Q2_archive_XYZ.txt
+        run: |
+          echo "Leprevost Lucas" > Q2_archive_XYZ.txt
+          date >> Q2_archive_XYZ.txt
+          cat XYZ.txt >> Q2_archive_XYZ.txt
+          echo "" >> Q2_archive_XYZ.txt
+          echo "Taille : $(wc -c < XYZ.txt) octets" >> Q2_archive_XYZ.txt
+
+      - name: Pousser le nouveau fichier sur le dépôt
+        run: |
+          git config --global user.name "Lucas.Leprevost"
+          git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git add Q2_archive_XYZ.txt
+          git commit --allow-empty -m "Archive Q2"
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && break
+            sleep 2
+          done
