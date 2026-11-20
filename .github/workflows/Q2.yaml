@@ -29,7 +29,4 @@ jobs:
           git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
           git add Q2_archive_XYZ.txt
           git commit --allow-empty -m "Archive Q2"
-          for i in 1 2 3 4 5; do
-            git pull --rebase && git push && break
-            sleep 2
-          done
+          git push
