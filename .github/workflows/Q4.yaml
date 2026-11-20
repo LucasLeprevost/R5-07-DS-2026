@@ -1,0 +1,31 @@
+name: Q4
+on:
+  push:
+    paths:
+      - 'Q4.java'
+      - '.github/workflows/Q4.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  archive-q4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Générer Q4_archive_date.txt
+        run: |
+          DATE=$(date +'%d-%m-%Y')
+          FILENAME="Q4_archive_${DATE}.txt"
+          echo "Leprevost Lucas" > "$FILENAME"
+          cat Q4.java >> "$FILENAME"
+
+      - name: Pousser le nouveau fichier sur le dépôt
+        run: |
+          git config --global user.name "Lucas.Leprevost"
+          git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git add Q4_archive_*.txt
+          git commit --allow-empty -m "Archive Q4"
+          git push
