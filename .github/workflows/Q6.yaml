@@ -1,0 +1,43 @@
+name: Q6
+on:
+  push:
+    paths:
+      - 'Q6.java'
+      - '.github/workflows/Q6.yaml'
+
+permissions:
+  contents: write
+
+jobs:
+  archive-q6:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer les fichiers du dépôt
+        uses: actions/checkout@v4
+
+      - name: Générer archive et diff
+        run: |
+          PREV_FILE=$(ls -1 Q6_archive_*.txt 2>/dev/null | sort | tail -n 1)
+          
+          DATE=$(date +'%d-%m-%Y-%H%M%S')
+          NEW_FILE="Q6_archive_${DATE}.txt"
+          
+          echo "Leprevost Lucas" > "$NEW_FILE"
+          cat Q6.java >> "$NEW_FILE"
+          echo "" >> "$NEW_FILE"
+          echo "Caractères : $(wc -m < Q6.java)" >> "$NEW_FILE"
+          echo "Lignes : $(wc -l < Q6.java)" >> "$NEW_FILE"
+          
+          if [ -n "$PREV_FILE" ]; then
+            diff "$PREV_FILE" "$NEW_FILE" > Q6_différences.txt || true
+          else
+            echo "Première exécution : aucun fichier précédent à comparer." > Q6_différences.txt
+          fi
+
+      - name: Pousser les nouveaux fichiers sur le dépôt
+        run: |
+          git config --global user.name "Lucas.Leprevost"
+          git config --global user.email "lucas.leprevost@etu.univ-lehavre.fr"
+          git add Q6_archive_*.txt Q6_différences.txt
+          git commit --allow-empty -m "Archive Q6 et diff"
+          git push
