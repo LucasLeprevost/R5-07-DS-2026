@@ -1,1 +1,8 @@
-Première exécution : aucun fichier précédent à comparer.
+13a14
+>                     //Modif pour la differenece
+21,22c22,23
+< Caractères : 407
+< Lignes : 18
+---
+> Caractères : 455
+> Lignes : 19
