@@ -10,6 +10,7 @@ public class Q6
                 for (int j = i; j >= 1; j--) 
                 {
                     System.out.print('x');
+                    //Modif pour la differenece
                 }
                 System.out.println();
             }
